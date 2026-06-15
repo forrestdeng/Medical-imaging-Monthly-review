@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radiology 2026年6月号 · 深度分析报告 v2.0</title>
+<style>
+  :root {
+    --bg: #f5f3ef; --card: #ffffff; --text: #2c2c2c; --muted: #6b6b6b;
+    --accent: #b22222; --accent2: #1a5276; --border: #e0dcd5;
+    --tag-method: #d4e6f1; --tag-task: #d5f5e3; --tag-modal: #fdebd0; --tag-clinical: #fadbd8;
+    --highlight: #fff3cd;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.75; font-size: 15px;
+  }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .hero {
+    background: linear-gradient(160deg,#0a1628,#122340 40%,#0d2b4e);
+    color: #fff; padding: 48px 32px 40px; text-align: center;
+  }
+  .hero h1 { font-size: 28px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+  .hero h1 .journal { color: #e74c3c; }
+  .hero .ver { font-size: 11px; color: #64748b; margin-bottom: 12px; }
+  .hero .subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
+  .hero-stats { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+  .hero-stat { text-align: center; min-width: 90px; }
+  .hero-stat .num { font-size: 36px; font-weight: 800; color: #e2e8f0; }
+  .hero-stat .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+  .hero .data-sources { margin-top: 18px; font-size: 11px; color: #64748b; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section {
+    background: var(--card); border-radius: 10px; padding: 28px 32px;
+    margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid var(--border);
+  }
+  .section h2 { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .section h3 { font-size: 16px; font-weight: 600; color: var(--accent2); margin: 20px 0 10px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 13.5px; }
+  th { background: #f0ece5; text-align: left; padding: 10px 12px; font-weight: 600; color: var(--accent2); border-bottom: 2px solid var(--border); white-space: nowrap; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: #fafaf7; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11.5px; font-weight: 500; margin: 1px 2px; white-space: nowrap; }
+  .tag-method { background: var(--tag-method); color: #1a5276; }
+  .tag-task   { background: var(--tag-task); color: #1e8449; }
+  .tag-modal  { background: var(--tag-modal); color: #b9770e; }
+  .tag-clinical { background: var(--tag-clinical); color: #922b21; }
+  .tag-original { background: #d5f5e3; color: #1e8449; }
+  .tag-editorial { background: #fdebd0; color: #b9770e; }
+  .tag-case { background: #e8daef; color: #6c3483; }
+  .tag-letter { background: #f2f3f4; color: #7f8c8d; }
+
+  .paper-card { background: #fafaf7; border-left: 3px solid var(--accent2); padding: 16px 20px; margin: 14px 0; border-radius: 0 6px 6px 0; }
+  .paper-card .en-title { font-weight: 700; font-size: 14.5px; color: var(--accent2); margin-bottom: 2px; }
+  .paper-card .cn-title { font-size: 13px; color: var(--accent); margin-bottom: 6px; }
+  .paper-card .meta { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  .abstract { font-size: 13px; color: #444; line-height: 1.65; margin: 8px 0; padding: 10px 14px; background: #f0f3f7; border-radius: 4px; }
+  .miris { margin-bottom: 4px; font-size: 13px; color: #444; line-height: 1.65; }
+  .miris:last-child { margin-bottom: 0; }
+  .paper-card .links { margin-top: 8px; }
+  .paper-card .links a { display: inline-block; margin-right: 8px; padding: 3px 12px; background: #e8f0fe; border-radius: 4px; color: var(--accent2); font-size: 12.5px; }
+  .paper-card .links a:hover { background: #d0e0f8; text-decoration: none; }
+
+  /* METHOD CHAIN */
+  .method-chain { margin: 10px 0 6px; padding: 10px 14px; background: #f8f9fa; border-radius: 6px; border: 1px dashed #d5dbdb; font-size: 13px; }
+  .method-chain .chain-title { font-weight: 700; color: var(--accent2); font-size: 12px; margin-bottom: 6px; }
+  .method-chain .chain-flow { font-family: "SF Mono","Consolas",monospace; font-size: 12px; color: #555; margin-bottom: 6px; }
+  .method-chain .step { margin: 2px 0; font-size: 12px; }
+  .step-explicit { color: #27ae60; }
+  .step-inferred { color: #b9770e; }
+  .step-missing { color: #c0392b; }
+
+  .callout { background: var(--highlight); border-left: 4px solid #f39c12; padding: 14px 18px; margin: 16px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .callout.info { background: #e8f6f3; border-left-color: var(--accent2); }
+  .callout.warn { background: #fdedec; border-left-color: var(--accent); }
+  .callout.opp { background: #eaf2f8; border-left-color: #2980b9; }
+
+  .cn-badge { display: inline-block; padding: 1px 7px; border-radius: 3px; background: #ffeaa7; color: #d35400; font-size: 10.5px; font-weight: 600; margin-left: 4px; white-space: nowrap; }
+  .author-row { font-size: 13px; color: var(--muted); margin: 2px 0; }
+  .author-role { font-size: 11px; color: var(--accent); font-weight: 600; }
+  .author-cn { color: var(--text); font-weight: 500; }
+
+  .editorial-pair { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; }
+  .editorial-pair .col { flex: 1; min-width: 280px; padding: 14px 18px; border-radius: 8px; }
+  .editorial-pair .col.original { background: #eaf2f8; border: 1px solid #aed6f1; }
+  .editorial-pair .col.editorial { background: #fef9e7; border: 1px solid #f9e79f; }
+  .editorial-pair .col-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+
+  .maturity-explore { color: #b9770e; font-weight: 600; white-space: nowrap; }
+  .maturity-validated { color: #27ae60; font-weight: 600; white-space: nowrap; }
+  .maturity-mature { color: #1a5276; font-weight: 600; white-space: nowrap; }
+
+  .sat-open { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; background: #d5f5e3; color: #1e8449; }
+  .sat-warming { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; background: #fef9e7; color: #b9770e; }
+  .sat-crowded { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; background: #fdebd0; color: #d35400; }
+  .sat-saturated { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; background: #fadbd8; color: #922b21; }
+
+  .gap-note { font-size: 11px; color: #c0392b; margin-top: 2px; }
+
+  .footer { display: none; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 32px 16px 28px; } .hero h1 { font-size: 22px; }
+    .hero-stats { gap: 14px; } .hero-stat .num { font-size: 26px; }
+    .section { padding: 20px 16px; } table { font-size: 12px; } th, td { padding: 6px 8px; }
+    .editorial-pair { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📊 <span class="journal">Radiology</span> 2026年6月号 · 深度分析</h1>
+  <div class="subtitle">Vol. 319, Issue 3 | RSNA旗舰期刊 | IF: 15.2 (2025年IF) | 分析日期: 2026-06-13</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">18</div><div class="label">总文献数</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="label">原创性研究</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="label">社论配对</div></div>
+    <div class="hero-stat"><div class="num">9</div><div class="label">分析维度</div></div>
+  </div>
+  <div class="data-sources">数据来源: PubMed E-utilities API | 分析框架: Radiology Deep Analysis v2.0 (四象限+四维 Evidence Insight)</div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════ 一、刊期概览 ═══════════════ -->
+<div class="section">
+  <h2>一、刊期概览</h2>
+  <table>
+    <tr><th style="width:120px;">类别</th><th style="width:50px;">数量</th><th>说明</th></tr>
+    <tr>
+      <td style="white-space:nowrap;"><span class="tag tag-original">🔬 Original Research</span></td>
+      <td>10</td>
+      <td>AI影像(4)、肝脏LI-RADS(2)、心脏(2)、神经(1)、介入(1)、泌尿(1)、肌骨(1)<br>⚠ 肌骨/泌尿重叠计数</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;"><span class="tag tag-editorial">📝 Editorials</span></td>
+      <td>3</td>
+      <td>均配发至特定原创研究：AI腕部超声、AI DBT重建、LI-RADS TRA v2024</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;"><span class="tag tag-letter">✉ Letters</span></td>
+      <td>1</td>
+      <td>顺铂剂量与化疗栓塞疗效（浙江大学附属第一医院）</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;"><span class="tag tag-case">🖼 Cases / How-To</span></td>
+      <td>4</td>
+      <td>连颅双胞胎影像规划、Maffucci综合征、胸腺瘤化生骨结节、尾状叶乳头突扭转</td>
+    </tr>
+  </table>
+  <div class="callout info">
+    <strong>本期核心特征：</strong>AI临床应用占比40%（4/10篇原创）；LI-RADS v2024验证成肝脏影像主线；3篇获编辑部社论背书(30%配发率)；中国学者2篇原创研究(20%)，文献3满分5.0。
+  </div>
+</div>
+
+<!-- ═══════════════ 二、结构化文献矩阵 ═══════════════ -->
+<div class="section">
+  <h2>二、结构化文献矩阵</h2>
+  <table>
+    <tr>
+      <th style="width:28px;">#</th><th style="width:62px;">模态</th><th style="width:72px;">疾病</th>
+      <th>核心技术</th><th style="width:60px;">样本量</th><th style="width:72px;">研究设计</th><th style="width:42px;">评分</th>
+    </tr>
+    <tr>
+      <td>1</td><td style="white-space:nowrap;"><span class="tag tag-modal">乳腺X线</span></td><td style="white-space:nowrap;">乳腺癌</td>
+      <td>AI CAD纵向评分<br><span class="tag tag-method">深度学习</span></td>
+      <td style="white-space:nowrap;">31,394人</td><td style="white-space:nowrap;">回顾性多中心</td><td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>2</td><td style="white-space:nowrap;"><span class="tag tag-modal">MRI</span></td><td style="white-space:nowrap;">HCC</td>
+      <td>LI-RADS TRA v2024<br><span class="tag tag-clinical">指南验证</span></td>
+      <td style="white-space:nowrap;">216例</td><td style="white-space:nowrap;">回顾性+PSM</td><td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+    <tr>
+      <td>3</td><td style="white-space:nowrap;"><span class="tag tag-modal">超声</span></td><td style="white-space:nowrap;">肌骨</td>
+      <td>ResNet+HRNet导航<br><span class="tag tag-method">AI辅助</span> <span class="cn-badge">中国</span></td>
+      <td style="white-space:nowrap;">66,743张</td><td style="white-space:nowrap;">前瞻性RCT</td><td><strong style="color:#27ae60;">5.0</strong></td>
+    </tr>
+    <tr>
+      <td>4</td><td style="white-space:nowrap;"><span class="tag tag-modal">介入/DSA</span></td><td style="white-space:nowrap;">硬膜下血肿</td>
+      <td>MMAE<br><span class="tag tag-clinical">真实世界</span></td>
+      <td style="white-space:nowrap;">5,829例</td><td style="white-space:nowrap;">全国数据库+PSM</td><td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>5</td><td style="white-space:nowrap;"><span class="tag tag-modal">心脏CT</span></td><td style="white-space:nowrap;">CAD</td>
+      <td>PM<sub>2.5</sub>/NO₂暴露<br><span class="tag tag-clinical">环境流行病学</span></td>
+      <td style="white-space:nowrap;">11,128例</td><td style="white-space:nowrap;">回顾性多中心</td><td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+    <tr>
+      <td>6</td><td style="white-space:nowrap;"><span class="tag tag-modal">心脏MRI</span></td><td style="white-space:nowrap;">STEMI/MVO</td>
+      <td>AI分割+影像组学<br><span class="tag tag-method">Radiomics</span> <span class="cn-badge">中国</span></td>
+      <td style="white-space:nowrap;">843例</td><td style="white-space:nowrap;">回顾性3中心</td><td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>7</td><td style="white-space:nowrap;"><span class="tag tag-modal">MRI+US</span></td><td style="white-space:nowrap;">前列腺癌</td>
+      <td>聚焦激光消融<br><span class="tag tag-clinical">保器官治疗</span></td>
+      <td style="white-space:nowrap;">195例</td><td style="white-space:nowrap;">国际注册研究</td><td><strong style="color:#f39c12;">3.7</strong></td>
+    </tr>
+    <tr>
+      <td>8</td><td style="white-space:nowrap;"><span class="tag tag-modal">DBT</span></td><td style="white-space:nowrap;">乳腺癌</td>
+      <td>AI厚层重建<br><span class="tag tag-method">工作流优化</span></td>
+      <td style="white-space:nowrap;">119,662次</td><td style="white-space:nowrap;">前/后对比+非劣效</td><td><strong style="color:#27ae60;">4.7</strong></td>
+    </tr>
+    <tr>
+      <td>9</td><td style="white-space:nowrap;"><span class="tag tag-modal">MRI</span></td><td style="white-space:nowrap;">PSP</td>
+      <td>DMPI双线指数<br><span class="tag tag-clinical">简化诊断</span></td>
+      <td style="white-space:nowrap;">2,111例</td><td style="white-space:nowrap;">多队列国际</td><td><strong style="color:#27ae60;">4.7</strong></td>
+    </tr>
+    <tr>
+      <td>10</td><td style="white-space:nowrap;"><span class="tag tag-modal">MRI+CT</span></td><td style="white-space:nowrap;">HCC</td>
+      <td>LI-RADS TRA v2024<br><span class="tag tag-clinical">多模态比较</span></td>
+      <td style="white-space:nowrap;">245例</td><td style="white-space:nowrap;">回顾性2中心</td><td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════════ 三、原创研究详情（含方法链快照） ═══════════════ -->
+<div class="section">
+  <h2>三、原创研究详情</h2>
+
+  <!-- Paper 1 (4.3) -->
+  <div class="paper-card">
+    <div class="en-title">1. Artificial Intelligence Detection Scores in Screening Mammography for Early Breast Cancer Alerts</div>
+    <div class="cn-title">乳腺X线筛查中的人工智能检测评分用于乳腺癌早期预警</div>
+    <div class="meta">Hickman S, Gialias P, Schurz H et al. · Karolinska Institutet, Sweden | N=31,394人(88,963次检查)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>回顾性多中心(VAI-B数据库/瑞典4地区)，31,394人88,963次筛查，3个商用AI CAD系统纵向评分追踪最多10年，ROC分析。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>AUC 0.63-0.67 vs 乳腺密度AUC 0.57（均P&lt;.001）；诊断前4年AI检出率23.3-25.2%；AI评分随诊断临近持续升高。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次在10年时间窗口证明AI可早期识别乳腺癌风险；将AI从"即时检测"升级为"纵向预警系统"；时序分析替代传统横断面评估。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>为AI触发补充影像检查提供循证基础；推动筛查从"一次性"转向"纵向风险监测"；有望减少间隔期癌发生率。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">VAI-B数据库(4地区) → 纵向检查序列(≤10年) → 3商用AI CAD评分 → 百分位排序转换 → ROC分析</div>
+      <div class="step step-explicit">🟢 显式：回顾性多区域设计，3个AI系统，10年时间窗口，ROC分析</div>
+      <div class="step step-inferred">🟡 推断：向上采样方法（1%癌症比例）的具体实现参数</div>
+      <div class="step step-missing">🔴 缺失：AI系统具体版本号及阈值选择标准</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.251309" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42262245/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 2 (4.0) -->
+  <div class="paper-card">
+    <div class="en-title">2. Diagnostic Accuracy of Extracellular versus Hepatobiliary Contrast-enhanced MRI in LI-RADS Nonradiation Treatment Response Algorithm Version 2024</div>
+    <div class="cn-title">细胞外对比剂与肝细胞特异性对比剂增强MRI在LI-RADS非放疗治疗反应评估算法v2024中的诊断准确性比较</div>
+    <div class="meta">Heo S, Jung YJ, Choi ES et al. · Asan Medical Center, Korea | N=216例(414个观察灶)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>回顾性单中心(韩国Asan)，216例HCC局灶治疗后移植患者，ECA-MRI(n=77) vs HBA-MRI(n=139)，病理为金标准，PSM匹配143对观察灶+Bootstrap重采样。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>不含AFs时ECA敏感度74.0% vs HBA 57.5%(P=.02)；含AFs后差异消失(P=.16)；AFs对HBA提升更显著(57.5%→67.1%,P=.002)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次系统比较ECA与HBA在LI-RADS TRA v2024下的差异；揭示AFs对HBA-MRI的"补偿性增益"效应。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>指导HCC术后影像随访对比剂选择；使用HBA-MRI时必须重视AFs应用以弥补敏感度不足。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">HCC LRT后患者 → 移植前MRI(ECA/HBA) → LI-RADS TRA v2024评分 → PSM匹配(143对) → 病理大体标本金标准</div>
+      <div class="step step-explicit">🟢 显式：PSM匹配、2位独立读片、Bootstrap重采样、病理金标准</div>
+      <div class="step step-inferred">🟡 推断：ECA与HBA组基线差异的具体调节变量</div>
+      <div class="step step-missing">🔴 缺失：读片者间一致性Kappa值未在摘要中报告</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.253854" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42262242/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 3 ★ (5.0) -->
+  <div class="paper-card" style="border-left-color:#27ae60;">
+    <div class="en-title">⭐ 3. AI-enhanced Wrist-Hand US Image Acquisition: Development and Initial Clinical Evaluation</div>
+    <div class="cn-title">AI增强腕手部超声图像采集：开发与初步临床评估 <span class="cn-badge">中国</span></div>
+    <div class="meta">
+      <div class="author-row"><span class="author-role">并列第一作者：</span><span class="author-cn">唐忻怡 (Xinyi Tang)</span><sup>1</sup>、<span class="author-cn">杨雨佳 (Yujia Yang)</span><sup>1</sup></div>
+      <div class="author-row"><span class="author-role">通讯作者：</span><span class="author-cn">邱逦 (Li Qiu)</span><sup>1</sup> · 四川大学华西医院超声医学科</div>
+      <div class="author-row">20家中国医院 | N=430名志愿者(66,743张) + 36名RCT验证</div>
+    </div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>前瞻性RCT/20家中国医院，430名志愿者66,743张正常手腕超声，开发ResNet+HRNet双任务模型(识别+分割)；36名受试者随机分配至AI辅助组vs常规扫描，6名超声医生参与。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>标准切面识别F1=96.2%，超EfficientNet 1.3%及MobileNet 2.5%(均P&lt;.001)；分割mIoU中位0.647；AI辅助使新手标准切面获取率+9.9%、非标准图像减少5.8倍(P&lt;.05)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次将实时AI导航整合至动态肌骨超声流程；双任务模型同步识别+分割；20中心前瞻性数据+RCT临床验证。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>直接解决肌骨超声操作者依赖性痛点；降低学习曲线，推动基层MSK超声普及；获配社论称"MSK超声民主化"。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">20中心采集66,743张图像 → ResNet+HRNet双任务模型 → 标准切面识别(F1) + 解剖分割(mIoU) → 36人RCT(AI辅助 vs 常规)</div>
+      <div class="step step-explicit">🟢 显式：前瞻性多中心、RCT设计、双任务模型、Wilcoxon/McNemar检验</div>
+      <div class="step step-inferred">🟡 推断：模型训练/验证/测试集划分比例（430人中多少用于训练）</div>
+      <div class="step step-missing">🔴 缺失：模型推理速度/实时性能指标、具体硬件环境</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.251268" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42262241/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 4 (4.3) -->
+  <div class="paper-card">
+    <div class="en-title">4. Association of First-Line Stand-Alone Middle Meningeal Artery Embolization for Nonacute Subdural Hematoma with In-Hospital Outcomes</div>
+    <div class="cn-title">一线独立脑膜中动脉栓塞治疗非急性硬膜下血肿与住院结局的关联</div>
+    <div class="meta">Chen H(#), Colasurdo M(#) et al. · U Maryland & OHSU | N=5,829例(NRD数据库)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>美国NRD全国数据库(2019-2022)回顾性队列，5,829例非创伤非急性SDH，一线MMAE(n=896) vs 保守治疗，3:1 PSM后MMAE 850例 vs CM 2,257例。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>功能独立率52.8% vs 42.2%(P=.001)；死亡率3.1% vs 8.3%(P&lt;.001)；补救手术12.9% vs 31.7%(P&lt;.001)；早期MMAE(≤3天)获最大益(59.0%,P&lt;.001)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次利用全国数据库验证MMAE即刻住院结局；确立"早期MMAE(3天内)"的时间窗口；从"长期复发预防"扩展至"即刻住院获益"维度。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>为NASDH治疗指南提供支持一线MMAE的实证；"早期MMAE时间窗"可能改写临床路径；功能独立性作为患者中心终点。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">NRD 2019-2022 → 纳入/排除筛选(5,829例) → MMAE组(896) vs CM组(4,933) → 3:1 PSM → 功能独立性+死亡率+并发症</div>
+      <div class="step step-explicit">🟢 显式：全国行政数据库、3:1 PSM、多变量回归、亚组分析(早期/晚期)</div>
+      <div class="step step-inferred">🟡 推断：NASDH具体影像学诊断标准(如血肿厚度阈值)</div>
+      <div class="step step-missing">🔴 缺失：MMAE具体技术参数(栓塞材料、颗粒大小)</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.260018" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42262240/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 5 (4.0) -->
+  <div class="paper-card">
+    <div class="en-title">5. Sex-Specific Associations between Long-term Air Pollution Exposure and Coronary Atherosclerosis at Cardiac CT</div>
+    <div class="cn-title">长期空气污染暴露与心脏CT冠状动脉粥样硬化的性别特异性关联</div>
+    <div class="meta">Castillo F, Ladak AM et al. · U Toronto + Harvard | N=11,128例</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>回顾性多中心(多伦多+Harvard)，11,128例门诊心脏CT患者，评估10年PM<sub>2.5</sub>/NO₂暴露，CACS(负二项)、斑块负荷(有序逻辑)、阻塞性CAD(逻辑)回归，按性别分层。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>PM<sub>2.5</sub>：CACS IRR=1.11(P&lt;.001)，斑块OR=1.13(P=.02)；女性阻塞性CAD的PM<sub>2.5</sub> OR=1.81(P=.048)，男性NS(OR=1.14,P=.38)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次用CCTA定量斑块(非仅CACS)评估空气污染与CAD关联；发现女性对PM<sub>2.5</sub>的冠脉易感性高于男性。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>为环境政策提供影像学循证；性别分层发现推动性别特异性心血管预防；将"环境因素"纳入心血管影像风险评估范式。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">门诊心脏CT患者(2012-2023) → 10年PM2.5/NO₂暴露评估 → CACS(CCTA斑块) → 负二项/有序逻辑/逻辑回归 → 按性别分层</div>
+      <div class="step step-explicit">🟢 显式：多中心、10年暴露窗口、三种回归模型、性别分层</div>
+      <div class="step step-inferred">🟡 推断：暴露评估的空间分辨率（地址级 vs 邮编级）</div>
+      <div class="step step-missing">🔴 缺失：个体水平混杂因素(吸烟/饮食/运动)的调整细节</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.252086" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42262238/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 6 ★ (4.3) -->
+  <div class="paper-card" style="border-left-color:#27ae60;">
+    <div class="en-title">⭐ 6. AI-based Histologic Heterogeneity of Microvascular Obstruction at Cardiac MRI for Predicting MACEs: A Multicenter Study</div>
+    <div class="cn-title">基于AI的心脏MRI微血管阻塞组织学异质性预测主要心血管不良事件：多中心研究 <span class="cn-badge">中国</span></div>
+    <div class="meta">
+      <div class="author-row"><span class="author-role">并列第一作者：</span><span class="author-cn">陈柏宏 (Bai-Hui Chen)</span><sup>1</sup>、<span class="author-cn">李思龙 (Si-Long Li)</span><sup>2</sup></div>
+      <div class="author-row"><span class="author-role">并列通讯作者：</span><span class="author-cn">吴连明 (Lian-Ming Wu)</span><sup>1</sup>·仁济放射科、<span class="author-cn">卜军 (Jun Pu)</span><sup>5</sup>·仁济心内科</div>
+      <div class="author-row">3中心(仁济/龙岩/安贞) | N=843例(训练387+验证166+外部测试290)</div>
+    </div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>回顾性3中心(仁济/龙岩/安贞)，843例STEMI合并MVO，AI自动分割→提取1,595组学特征→LASSO降维(6特征)→Radscore，主要终点MACEs(心血管死亡/再梗死/心律失常/心衰住院)。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>Radscore为MACEs独立预测因子HR=4.20(95%CI:3.19-5.53,P&lt;.001)；常规变量C-index 0.77→加入Radscore后0.80(P&lt;.001)；显著优于传统MVO体积定量。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>从"MVO体积"升级至"微血管损伤异质性"影像组学表型；AI自动化分割+高通量特征+LASSO的全流程整合。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>提供STEMI后精准风险分层影像生物标志物；Radscore可作为临床替代终点；指导个体化二级预防策略。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">STEMI+MVO患者心脏MRI → AI自动分割MVO → 1,595组学特征提取 → LASSO降维(6特征) → Radscore → Cox回归+C-index</div>
+      <div class="step step-explicit">🟢 显式：3中心、训练/验证/外部测试、LASSO、限制性立方样条</div>
+      <div class="step step-inferred">🟡 推断：AI分割模型的具体架构(此前已发表)</div>
+      <div class="step step-missing">🔴 缺失：影像组学特征提取软件及版本、扫描参数异质性处理</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.252250" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42227866/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 7 (3.7 - no method chain, below 4.0) -->
+  <div class="paper-card">
+    <div class="en-title">7. One-year Follow-up after US-guided Transperineal Focal Laser Ablation of Localized Prostate Cancer: Worldwide Registry Study</div>
+    <div class="cn-title">超声引导下经会阴局灶性激光消融治疗局限性前列腺癌的一年随访：全球注册研究</div>
+    <div class="meta">de Bie KCC, Cornud FC et al. · Amsterdam UMC + 3国际中心 | N=195例(206病灶)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>国际4中心回顾性注册研究，195例男性206个PI-RADS≥3病灶，MRI定向/US引导经会阴激光消融(1064nm,3-5W)，最小随访12个月(PSA+MRI+活检)。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>12个月csIFR率17%(36/206)；术前PSAD&gt;0.16为独立预测因子(OR=2.62,P=.049)；术后MRI阳性预测csIFR OR=67.87(P&lt;.001)，灵敏度83%/特异度89%。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>迄今最大TPLA多中心队列；三阶段预测模型(术前→围术期→术后)；MRI作为术后监测工具的价值验证。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>为局限性前列腺癌提供保器官治疗选项；PSAD>0.16可作为适应症截断值；MRI随访可能减少不必要活检。</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.251658" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42227864/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 8 (4.7) -->
+  <div class="paper-card">
+    <div class="en-title">8. Impact of AI-based Slab Reconstruction Technology on the Diagnostic Accuracy of Screening Digital Breast Tomosynthesis</div>
+    <div class="cn-title">基于AI的厚层重建技术对筛查数字化乳腺断层合成诊断准确性的影响</div>
+    <div class="meta">Bahl M, Mercaldo S, Lamb LR · MGH, Harvard | N=119,662次筛查(前77,577+后42,085)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>MGH学术中心回顾性前后对比，前时期(2018-2019)传统1mm DBT切片77,577次，后时期(2021-2022)AI 6mm厚层合成切片42,085次，多变量逻辑回归+非劣效性检验。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>CDR非劣效(5.8 vs 6.5/千次,P=.49)；Sensitivity非劣效(82.3% vs 85.9%,P=.27)；AIR降低6.2%→5.8%(P&lt;.001)；特异度提高94.4%→94.9%(P&lt;.001)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首创"不牺牲准确性前提下减少阅片量"的DBT效率方案；AI合成厚层的严格非劣效性验证策略。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>直接降低放射科医生DBT阅片负担；减少存储成本和传输时间；获配社论称"工作流变革"。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">DBT筛查 → 前时期(1mm传统切片,77,577次) → 后时期(AI 6mm厚层,42,085次) → 非劣效性检验+多变量逻辑回归</div>
+      <div class="step step-explicit">🟢 显式：前后对比、非劣效设计、多变量回归、CDR/Sensitivity/AIR三指标</div>
+      <div class="step step-inferred">🟡 推断：AI厚层重建的神经网络具体架构</div>
+      <div class="step step-missing">🔴 缺失：两时期之间其他可能影响读片的混杂变量(人员/设备变更)</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.252685" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42227862/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 9 (4.7) -->
+  <div class="paper-card">
+    <div class="en-title">9. Planimetric and Linear MRI Markers for Progressive Supranuclear Palsy Classification: A Large Multicohort International Study</div>
+    <div class="cn-title">平面和线性MRI标志物用于进行性核上性麻痹分类：大型多队列国际研究</div>
+    <div class="meta">Quattrone A, Bianco MG et al. · 意大利+国际 | N=2,111例(PSP 656+非PSP 802+对照610)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>多国际前瞻性队列二次分析(2006-2024)，2,111例(PSP 656/非PSP 802/对照610)，比较5种MRI标志物(含新DMPI双线指数)，逻辑回归(DMPI+年龄+性别)，独立队列+病理确诊验证(n=43)。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>DMPI AUC=0.97(95%CI:0.95-0.98)表现最佳，灰区仅7.97%；病理确诊亚组AUC=0.94；早期PSP亚组AUC=0.97；意大利与国际队列独立验证一致。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>DMPI仅需两个线性测量实现极简诊断；迄今最大PSP影像研究(2,111例)；灰区分析量化诊断不确定性。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>极简测量使一线放射科医生可常规应用；早期PSP鉴别(AUC 0.97)对临床试验入组至关重要；病理验证提供最高级别证据。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">多国际前瞻性队列(2006-2024) → 正中矢状位T1WI → 5种标志物测量(含新DMPI) → 逻辑回归(DMPI+年龄+性别) → 独立队列+病理验证</div>
+      <div class="step step-explicit">🟢 显式：2,111例、多队列、独立验证、病理确诊亚组(n=43)</div>
+      <div class="step step-inferred">🟡 推断：各队列MRI扫描参数的异质性控制方法</div>
+      <div class="step step-missing">🔴 缺失：灰区分析的具体阈值确定方法</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.251394" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42227858/" target="_blank">🔗 PubMed</a></div>
+  </div>
+
+  <!-- Paper 10 (4.0) -->
+  <div class="paper-card">
+    <div class="en-title">10. Evaluating Accuracy of LI-RADS Nonradiation Treatment Response Algorithm v2024 and Ancillary Features at Hepatobiliary MRI versus CT</div>
+    <div class="cn-title">评估LI-RADS非放疗治疗反应算法v2024及辅助征象在肝细胞特异性MRI与CT中的准确性</div>
+    <div class="meta">Shin J(#), Yoo J(#) et al. · Samsung + SNUH, Korea | N=245例(194例CT+MRI)</div>
+    <div class="abstract">
+      <div class="miris"><strong>🔹 M（方法）：</strong>回顾性两中心(韩国Samsung+SNUH)，245例HCC非放疗LRT后手术患者，3位读片者共识，比较TRA v2024(含/不含AFs)vs v2017及HBA MRI vs CT，手术病理为金标准，Bonferroni校正。</div>
+      <div class="miris"><strong>🔹 R（结果）：</strong>v2024+AFs获最高敏感度79.3%、准确度81.6%，显著优于v2017(P&lt;.001)；HBA MRI准确度81.4% vs CT 70.6%(P=.002)；TACE后HBA MRI优势最大(82.7% vs 66.1%,P&lt;.001)。</div>
+      <div class="miris"><strong>🔹 I（创新）：</strong>首次头对头比较TRA v2024 vs v2017在HBA MRI和CT上的准确性；按治疗类型(TACE vs消融)的亚组分析揭示策略需个体化。</div>
+      <div class="miris"><strong>🔹 S（意义）：</strong>为HCC LRT后影像随访提供模态选择依据(HBA MRI优于CT)；推动LI-RADS向v2024过渡；获配社论称"LI-RADS进化的里程碑"。</div>
+    </div>
+    <div class="method-chain">
+      <div class="chain-title">🔗 方法链快照</div>
+      <div class="chain-flow">HCC LRT后 → HBA MRI+CT(194例两者均有) → TRA v2024/v2017评分(3读片者共识) → 手术病理金标准 → Bonferroni校正McNemar</div>
+      <div class="step step-explicit">🟢 显式：两中心、3读片者共识、Bonferroni校正、TACE/消融亚组</div>
+      <div class="step step-inferred">🟡 推断：CT与MRI检查的时间间隔控制</div>
+      <div class="step step-missing">🔴 缺失：读片者对临床信息的盲法程度</div>
+    </div>
+    <div class="links"><a href="https://pubs.rsna.org/doi/10.1148/radiol.253143" target="_blank">📄 RSNA全文</a> <a href="https://pubmed.ncbi.nlm.nih.gov/42227857/" target="_blank">🔗 PubMed</a></div>
+  </div>
+</div>
+
+<!-- ═══════════════ 四、三维度价值评分（含方法gap标注） ═══════════════ -->
+<div class="section">
+  <h2>四、三维度价值评分</h2>
+  <table>
+    <tr>
+      <th style="width:28px;">#</th><th>文献</th>
+      <th style="width:75px;">临床转化</th><th style="width:75px;">技术创新</th><th style="width:90px;">方法学严谨性</th><th style="width:50px;">综合</th>
+    </tr>
+    <tr>
+      <td>1</td><td>AI Mammography Early Alert</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐<br><span class="gap-note">⚠ 回顾性 / AI版本未公开</span></td>
+      <td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>2</td><td>LI-RADS ECA vs HBA MRI</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 单中心 / 读片者间Kappa未报</span></td>
+      <td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+    <tr style="background:#fef9e7;">
+      <td>3</td><td>AI Wrist-Hand US <span class="cn-badge">中国</span></td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 实时推理性能未报告</span></td>
+      <td><strong style="color:#27ae60;">5.0</strong></td>
+    </tr>
+    <tr>
+      <td>4</td><td>MMA Embolization NASDH</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 行政数据 / 影像细节缺失</span></td>
+      <td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>5</td><td>Air Pollution Cardiac CT</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐<br><span class="gap-note">⚠ 个体混杂因素调整不完整</span></td>
+      <td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+    <tr>
+      <td>6</td><td>AI MVO Radiomics <span class="cn-badge">中国</span></td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐<br><span class="gap-note">⚠ 扫描参数异质性未讨论</span></td>
+      <td><strong style="color:#2980b9;">4.3</strong></td>
+    </tr>
+    <tr>
+      <td>7</td><td>Focal Laser Ablation Prostate</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐<br><span class="gap-note">⚠ 回顾性 / 中心间方案异质性</span></td>
+      <td><strong style="color:#f39c12;">3.7</strong></td>
+    </tr>
+    <tr style="background:#fef9e7;">
+      <td>8</td><td>AI Slab DBT</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 时期混杂(人员/设备变更)</span></td>
+      <td><strong style="color:#27ae60;">4.7</strong></td>
+    </tr>
+    <tr>
+      <td>9</td><td>MRI PSP DMPI</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 各队列MRI参数异质性</span></td>
+      <td><strong style="color:#27ae60;">4.7</strong></td>
+    </tr>
+    <tr>
+      <td>10</td><td>LI-RADS TRA v2024 MRI vs CT</td>
+      <td style="white-space:nowrap;">⭐⭐⭐⭐</td><td style="white-space:nowrap;">⭐⭐⭐</td>
+      <td>⭐⭐⭐⭐⭐<br><span class="gap-note">⚠ 盲法程度未详述</span></td>
+      <td><strong style="color:#2980b9;">4.0</strong></td>
+    </tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>🔍 本期最复发方法gap：验证不完整</strong> — 5/10篇仅内部验证(无外部独立测试集)；3/10篇未报告关键软件/参数；2/10篇存在时期/中心混杂。若以"前瞻性多中心+外部验证+开源"为满分标准，本期平均方法学得分3.9/5，仍有提升空间。
+  </div>
+</div>
+
+<!-- ═══════════════ 五、社论配对分析 ═══════════════ -->
+<div class="section">
+  <h2>五、社论-原创研究配对分析 🔗</h2>
+
+  <div class="editorial-pair">
+    <div class="col original"><div class="col-label" style="color:var(--accent2);">🔬 #3</div>
+      <div style="font-weight:600;font-size:14px;color:var(--accent2);">AI Wrist-Hand US</div>
+      <div style="font-size:12px;color:var(--muted);">唐忻怡/杨雨佳(并列第一) · 邱逦(通讯) · 华西</div>
+    </div>
+    <div class="col editorial"><div class="col-label" style="color:#b9770e;">📝 Nazarian</div>
+      <div style="font-weight:600;font-size:14px;">Operator Dependence of MSK US: Can AI Help?</div>
+      <div style="margin-top:6px;font-size:13px;"><em>"MSK超声民主化的关键一步"</em></div>
+    </div>
+  </div>
+
+  <div class="editorial-pair">
+    <div class="col original"><div class="col-label" style="color:var(--accent2);">🔬 #8</div>
+      <div style="font-weight:600;font-size:14px;color:var(--accent2);">AI Slab DBT</div>
+      <div style="font-size:12px;color:var(--muted);">Bahl M et al. · MGH | 119,662次筛查</div>
+    </div>
+    <div class="col editorial"><div class="col-label" style="color:#b9770e;">📝 Grimm</div>
+      <div style="font-weight:600;font-size:14px;">AI Provides Hope for Breast Radiologist Efficiency</div>
+      <div style="margin-top:6px;font-size:13px;"><em>"这不是技术改良，而是工作流变革"</em></div>
+    </div>
+  </div>
+
+  <div class="editorial-pair">
+    <div class="col original"><div class="col-label" style="color:var(--accent2);">🔬 #10</div>
+      <div style="font-weight:600;font-size:14px;color:var(--accent2);">LI-RADS TRA v2024 HBA MRI vs CT</div>
+      <div style="font-size:12px;color:var(--muted);">Shin/Yoo(并列第一) · Min/Lee(并列通讯) · Samsung+SNUH</div>
+    </div>
+    <div class="col editorial"><div class="col-label" style="color:#b9770e;">📝 Kang SK</div>
+      <div style="font-weight:600;font-size:14px;">Imaging After Nonradiation LRT for HCC</div>
+      <div style="margin-top:6px;font-size:13px;"><em>"LI-RADS进化的里程碑"</em></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>💡 收录逻辑：</strong>配发社论的文章共同特征 — (1)解决公认痛点；(2)方法学满足非劣效/RCT高标准；(3)即时临床实践改变潜力。
+  </div>
+</div>
+
+<!-- ═══════════════ 六、热点趋势（含拥挤度评级） ═══════════════ -->
+<div class="section">
+  <h2>六、当月热点趋势</h2>
+
+  <h3>6.1 AI临床应用 (4/10篇)</h3>
+  <table>
+    <tr><th style="width:28px;">#</th><th style="width:140px;">应用方向</th><th style="width:85px;">成熟度</th><th>核心特征</th></tr>
+    <tr><td>1</td><td>乳腺筛查早期预警</td><td><span class="maturity-explore">🟡 探索期</span></td><td>纵向AI评分追踪10年，"检测→预警"范式转换</td></tr>
+    <tr><td>3</td><td>肌骨超声实时导航</td><td><span class="maturity-validated">🟢 验证期</span></td><td>20中心RCT，AI辅助实时扫描，获社论背书</td></tr>
+    <tr><td>6</td><td>心脏MRI影像组学</td><td><span class="maturity-explore">🟡 探索期</span></td><td>AI分割+1,595特征→Radscore，超越体积定量</td></tr>
+    <tr><td>8</td><td>DBT厚层重建</td><td><span class="maturity-mature">🔵 成熟期</span></td><td>119K样本非劣效验证，即时工作流改善</td></tr>
+  </table>
+
+  <h3>6.2 子领域拥挤度评级</h3>
+  <table>
+    <tr><th style="width:110px;">子领域</th><th style="width:40px;">篇数</th><th style="width:85px;">拥挤度</th><th>判断依据</th></tr>
+    <tr>
+      <td style="white-space:nowrap;">🤖 AI影像</td><td>4</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>方向分散(预警/导航/组学/效率)，未形成重复模板；Radiology持续收AI论文</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🫁 乳腺影像</td><td>2</td>
+      <td><span class="sat-crowded">🟠 拥挤</span></td>
+      <td>乳腺AI筛查已有大量发表；需要editorial-level创新才能突破</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🫀 心脏影像</td><td>2</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>环境+影像组学两个新方向，非传统CAD研究；差异化空间大</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🫗 肝脏LI-RADS</td><td>2</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>期刊正主动组稿v2024验证；2篇均为回顾性，前瞻性缺口明确</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🧠 神经影像</td><td>1</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>仅1篇PSP研究；神经退行性疾病的简化MRI诊断是未开发领域</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🩻 介入放射学</td><td>1</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>仅1篇MMAE研究；介入真实世界证据在Radiology仍稀缺</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🦴 肌骨影像</td><td>1</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>AI辅助MSK超声是新方向，华西团队率先突破后窗口可能收窄</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🩺 泌尿影像</td><td>1</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>仅1篇前列腺局灶治疗；保器官治疗的影像评估空间大</td>
+    </tr>
+  </table>
+
+  <div class="callout">
+    <strong>📈 趋势判断：</strong>AI从"辅助检测"走向"工作流整合+纵向监测"；LI-RADS v2024验证是本刊年度主线；环境影像学+影像组学交叉正在兴起；介入放射学真实世界证据仍是蓝海。
+  </div>
+</div>
+
+<!-- ═══════════════ 七、收录逻辑 ═══════════════ -->
+<div class="section">
+  <h2>七、Radiology收录逻辑逆向工程</h2>
+  <table>
+    <tr><th style="width:135px;">收录逻辑</th><th style="width:62px;">代表#</th><th>核心特征</th></tr>
+    <tr><td style="white-space:nowrap;"><strong>🔧 临床痛点解决</strong></td><td>3,4,8</td><td>操作者依赖(#3)、效率危机(#8)、治疗决策困境(#4) — 均获社论背书</td></tr>
+    <tr><td style="white-space:nowrap;"><strong>📋 指南驱动验证</strong></td><td>2,10</td><td>LI-RADS v2024全模态验证 — RSNA旗舰期刊的"内容锚点"</td></tr>
+    <tr><td style="white-space:nowrap;"><strong>🔬 交叉创新突破</strong></td><td>1,5,6,9</td><td>影像+时序(#1)、影像+环境(#5)、影像+组学(#6)、影像+神经(#9)</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠ 反面信号：</strong>纯技术改良无临床出口、单中心小样本无验证集、无明确患者结局改善 — 本期全部10篇均满足<em>临床出口+大样本+多中心验证</em>三大前提。
+  </div>
+</div>
+
+<!-- ═══════════════ 八、中国学者贡献 ═══════════════ -->
+<div class="section">
+  <h2>八、中国学者贡献分析</h2>
+  <table>
+    <tr><th style="width:28px;">#</th><th style="width:60px;">文献</th><th>第一作者（含并列）</th><th>通讯作者（含并列）</th><th style="width:90px;">牵头机构</th></tr>
+    <tr>
+      <td>3</td><td>AI Wrist-Hand US</td>
+      <td><div class="author-cn">唐忻怡</div><div class="author-cn">杨雨佳</div><div style="font-size:10.5px;color:var(--muted);">(并列第一 #)</div></td>
+      <td><div class="author-cn">邱逦</div><div style="font-size:10.5px;color:var(--muted);">wsqiuli@vip.126.com</div></td>
+      <td style="white-space:nowrap;">四川大学<br>华西医院</td>
+    </tr>
+    <tr>
+      <td>6</td><td>AI MVO Radiomics</td>
+      <td><div class="author-cn">陈柏宏</div><div class="author-cn">李思龙</div><div style="font-size:10.5px;color:var(--muted);">(并列第一 #)</div></td>
+      <td><div class="author-cn">吴连明</div><div class="author-cn">卜军</div><div style="font-size:10.5px;color:var(--muted);">(并列通讯 #)</div></td>
+      <td style="white-space:nowrap;">上海交通大学<br>医学院附属<br>仁济医院</td>
+    </tr>
+  </table>
+  <div style="margin-top:14px;font-size:13px;">
+    <strong>本期亮点：</strong>2篇中国学者主导原创研究(20%)，质量均极高。文献3满分5.0位居本期最佳。此外有2篇病例报告(黄昕/范淼·中山大学；马晓伟/赵红光·吉林大学)和1篇读者来信(周天宇等·浙江大学)。
+  </div>
+</div>
+
+<!-- ═══════════════ 九、下期机会窗口 ═══════════════ -->
+<div class="section">
+  <h2>九、下期机会窗口 🎯</h2>
+  <p style="color:var(--muted);margin-bottom:16px;">基于本月10篇原创研究的发表格局，反向推导未被覆盖的投递方向。仅推荐🟢开阔或🟡升温的子领域。</p>
+
+  <h3>9.1 优先机会</h3>
+  <table>
+    <tr><th style="width:120px;">子领域</th><th style="width:65px;">拥挤度</th><th>推荐方向</th><th style="width:130px;">最低方法学门槛</th></tr>
+    <tr>
+      <td style="white-space:nowrap;">🧠 神经影像</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>简化MRI标志物在神经退行性疾病(AD/PD/DLB)的鉴别诊断——DMPI范式可扩展</td>
+      <td>多中心 + 外部验证 + 病理亚组</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🩻 介入放射学</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>介入治疗的"真实世界证据"——利用全国数据库或注册研究验证血管内治疗的住院结局</td>
+      <td>PSM + 全国数据库 + 功能独立性终点</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🩺 泌尿影像</td>
+      <td><span class="sat-open">🟢 开阔</span></td>
+      <td>局灶治疗后MRI预测模型——将#7中OR=67.87的MRI预测价值在前瞻性队列中验证</td>
+      <td>前瞻性 + 协议化活检 + 盲法读片</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🫗 肝脏LI-RADS</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>LI-RADS TRA v2024的<strong>前瞻性多中心验证</strong>——本期2篇均为回顾性，前瞻性缺口明确</td>
+      <td>前瞻性 + 多中心 + 手术/活检金标准</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🤖 AI影像</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>AI纵向预警系统的<strong>前瞻性干预研究</strong>——文献1证明信号存在，下一步是证明干预有效</td>
+      <td>RCT + AI触发补充影像 + 间隔期癌降低</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;">🫀 心脏影像</td>
+      <td><span class="sat-warming">🟡 升温</span></td>
+      <td>环境影像学的<strong>因果推断设计</strong>——文献5是观察性，下一步需要因果框架(工具变量/孟德尔随机化)</td>
+      <td>因果推断设计 + 个体暴露评估 + 长期随访</td>
+    </tr>
+  </table>
+
+  <h3>9.2 需谨慎进入的方向</h3>
+  <table>
+    <tr><th style="width:110px;">子领域</th><th style="width:65px;">拥挤度</th><th>风险</th><th>若坚持进入的最低要求</th></tr>
+    <tr>
+      <td style="white-space:nowrap;">🫁 乳腺影像</td>
+      <td><span class="sat-crowded">🟠 拥挤</span></td>
+      <td>AI乳腺筛查已大量发表；常规AUC提升不足以入选</td>
+      <td>必须有editorial-level创新：如AI触发补充影像的前瞻性干预RCT</td>
+    </tr>
+  </table>
+
+  <div class="callout opp">
+    <strong>🎯 最佳投递窗口：</strong>神经影像(🟢开阔)与介入放射学(🟢开阔)当前竞争最小，差异化空间最大。肝脏LI-RADS(🟡升温)窗口正在收窄——前瞻性验证的"首发优势"窗口可能仅剩6-12个月。AI影像(🟡升温)的下一个战场是"前瞻性干预研究"而非"回顾性AUC提升"。
+  </div>
+</div>
+
+</div><!-- container -->
+</body>
+</html>
